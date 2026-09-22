@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Marina Kamal — Full Stack Web Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=Manrope:wght@400;500;600;700&family=Tajawal:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+
+    --ink: #182530;
+    --ink-soft: #55697A;
+    --paper: #F5F7F8;
+    --paper-raised: #FFFFFF;
+    --accent: #2F6FA3;
+    --accent-soft: #E3EEF5;
+    --gold: #D9A257;
+    --line: #DCE3E8;
+    --shadow: rgba(24, 37, 48, 0.10);
+    --hero-grad: linear-gradient(135deg, #12283B 0%, #2F6FA3 55%, #6FB2DB 100%);
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
+  *, *::before, *::after { box-sizing: inherit; }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #E9EFF4;
+      --ink-soft: #9FB1C0;
+      --paper: #101820;
+      --paper-raised: #172130;
+      --accent: #6FB2DB;
+      --accent-soft: #1D3244;
+      --gold: #E6BC85;
+      --line: #263241;
+      --shadow: rgba(0, 0, 0, 0.4);
+      --hero-grad: linear-gradient(135deg, #0B1B29 0%, #1E4E71 55%, #2F6FA3 100%);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #E9EFF4;
+    --ink-soft: #9FB1C0;
+    --paper: #101820;
+    --paper-raised: #172130;
+    --accent: #6FB2DB;
+    --accent-soft: #1D3244;
+    --gold: #E6BC85;
+    --line: #263241;
+    --shadow: rgba(0, 0, 0, 0.4);
+    --hero-grad: linear-gradient(135deg, #0B1B29 0%, #1E4E71 55%, #2F6FA3 100%);
+  }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Manrope', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    transition: background .3s ease, color .3s ease;
+  }
+  html[dir="rtl"] body, html[dir="rtl"] * { font-family: 'Tajawal', sans-serif; }
+  html[dir="rtl"] .mono { font-family: 'JetBrains Mono', monospace; }
+
+  img, svg { max-width: 100%; }
+  a { color: inherit; }
+
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 28px; }
+  @media (max-width: 640px) { .wrap { padding: 0 20px; } }
+
+  /* ---------- top bar ---------- */
+  header.top {
+    position: sticky; top: 0; z-index: 40;
+    top: env(safe-area-inset-top, 0px);
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .top-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 28px;
+    max-width: 1040px; margin: 0 auto;
+  }
+  @media (max-width: 640px) { .top-inner { padding: 14px 20px; } }
+  .brand {
+    font-family: 'Newsreader', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+  .top-actions { display: flex; align-items: center; gap: 10px; }
+  .lang-btn, .theme-btn {
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    color: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    padding: 8px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: border-color .2s ease, transform .15s ease;
+  }
+  .lang-btn:hover, .theme-btn:hover { border-color: var(--accent); }
+  .lang-btn:active, .theme-btn:active { transform: scale(0.96); }
+  .theme-btn { width: 38px; height: 38px; padding: 0; display:flex; align-items:center; justify-content:center; font-size: 1rem; }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    padding: 88px 0 76px;
+    background: var(--hero-grad);
+    color: #FFFFFF;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .hero::before, .hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(2px);
+    z-index: -1;
+  }
+  .hero::before {
+    width: 340px; height: 340px;
+    background: rgba(255,255,255,0.14);
+    top: -120px; inset-inline-end: -80px;
+  }
+  .hero::after {
+    width: 220px; height: 220px;
+    background: rgba(255,166,92,0.28);
+    bottom: -90px; inset-inline-start: -60px;
+  }
+  .hero-shapes { position: absolute; inset: 0; z-index: -1; opacity: 0.5; }
+  .hero-glyph {
+    position: absolute;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(9rem, 22vw, 15rem);
+    font-weight: 500;
+    color: rgba(255,255,255,0.07);
+    inset-inline-end: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: -1;
+    pointer-events: none;
+    line-height: 1;
+    user-select: none;
+  }
+  @keyframes riseIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero .eyebrow, .hero h1.name, .hero .role, .hero .usp-line, .hero .hero-actions {
+    animation: riseIn 0.7s cubic-bezier(.2,.7,.3,1) both;
+  }
+  .hero .eyebrow { animation-delay: 0s; }
+  .hero h1.name { animation-delay: .08s; }
+  .hero .role { animation-delay: .16s; }
+  .hero .usp-line { animation-delay: .24s; }
+  .hero .hero-actions { animation-delay: .32s; }
+  @media (prefers-reduced-motion: reduce) {
+    .hero .eyebrow, .hero h1.name, .hero .role, .hero .usp-line, .hero .hero-actions { animation: none; }
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    background: rgba(255,255,255,0.16);
+    padding: 7px 14px;
+    border-radius: 999px;
+    color: #FFF3E9;
+    margin-bottom: 26px;
+  }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); display:inline-block; }
+  h1.name {
+    font-family: 'Newsreader', serif;
+    font-weight: 600;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    line-height: 1.04;
+    margin: 0 0 18px;
+    letter-spacing: -0.5px;
+    max-width: 14ch;
+    color: #FFFFFF;
+  }
+  .role {
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    color: rgba(255,255,255,0.88);
+    margin: 0 0 30px;
+    max-width: 46ch;
+  }
+  .usp-line {
+    border-inline-start: 3px solid var(--gold);
+    padding-inline-start: 18px;
+    max-width: 52ch;
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: #FFFFFF;
+    background: rgba(255,255,255,0.1);
+    padding: 16px 20px;
+    border-radius: 0 14px 14px 0;
+    margin-bottom: 38px;
+  }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 26px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform .15s ease, background .2s ease, border-color .2s ease;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn.primary { background: var(--gold); color: #241000; }
+  .btn.primary:hover { background: #E6BC85; transform: translateY(-2px); }
+  .btn.ghost { border-color: rgba(255,255,255,0.5); color: #FFFFFF; }
+  .btn.ghost:hover { border-color: #FFFFFF; background: rgba(255,255,255,0.12); }
+
+  /* ---------- sections ---------- */
+  section { padding: 64px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: none; }
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+  h2.section-title {
+    font-family: 'Newsreader', serif;
+    font-size: clamp(1.6rem, 3.4vw, 2.1rem);
+    font-weight: 600;
+    margin: 0 0 28px;
+    max-width: 20ch;
+  }
+
+  /* about */
+  .about-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 48px; align-items: start; }
+  @media (max-width: 760px) { .about-grid { grid-template-columns: 1fr; gap: 30px; } }
+  .about-text p { font-size: 1.05rem; line-height: 1.7; color: var(--ink-soft); margin: 0 0 16px; }
+  .fact-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .fact-list li {
+    display: flex; justify-content: space-between; gap: 12px;
+    padding: 13px 0; border-bottom: 1px solid var(--line);
+    font-size: 0.92rem;
+  }
+  .fact-list .k { color: var(--ink-soft); font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; padding-top: 2px; }
+  .fact-list .v { text-align: end; }
+
+  /* services */
+  .service-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  @media (max-width: 700px) { .service-grid { grid-template-columns: 1fr; } }
+  .service-item {
+    background: var(--paper-raised);
+    padding: 24px 24px;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    border-top: 4px solid var(--svc-color, var(--accent));
+    box-shadow: 0 6px 18px var(--shadow);
+  }
+  .service-item h3 { font-family: 'Newsreader', serif; font-weight: 600; font-size: 1.05rem; margin: 0 0 8px; color: var(--svc-color, var(--accent)); }
+  .service-item p { margin: 0; color: var(--ink-soft); font-size: 0.92rem; line-height: 1.55; }
+
+  /* skills */
+  .skill-cloud { display: flex; flex-wrap: wrap; gap: 10px; }
+  .skill-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    padding: 9px 18px;
+    border: none;
+    border-radius: 999px;
+    background: var(--tag-color, var(--accent-soft));
+    color: var(--tag-text, var(--accent));
+    font-weight: 500;
+  }
+
+  /* projects */
+  .project-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 26px; }
+  @media (max-width: 700px) { .project-grid { grid-template-columns: 1fr; } }
+  .project-card {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px var(--shadow);
+  }
+  .project-preview {
+    aspect-ratio: 16 / 10;
+    position: relative;
+    border-bottom: 1px solid var(--line);
+  }
+  .browser-dots { position: absolute; top: 12px; inset-inline-start: 14px; display: flex; gap: 6px; z-index: 2; }
+  .browser-dots span { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.65); }
+  .project-body { padding: 20px 22px 24px; }
+  .project-body h3 { font-family: 'Newsreader', serif; font-size: 1.08rem; font-weight: 600; margin: 0 0 8px; }
+  .project-body p { margin: 0; color: var(--ink-soft); font-size: 0.9rem; line-height: 1.55; }
+  .project-tag {
+    display: inline-block; margin-top: 12px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+    color: var(--accent);
+  }
+
+  /* contact */
+  .contact-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: 26px; }
+  html[dir="rtl"] .contact-wrap { align-items: flex-end; }
+  .contact-title {
+    font-family: 'Newsreader', serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 600;
+    max-width: 16ch;
+    margin: 0;
+  }
+  .contact-list { display: flex; flex-direction: column; gap: 14px; }
+  .contact-list a {
+    display: inline-flex; align-items: center; gap: 10px;
+    text-decoration: none;
+    font-size: 1.02rem;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--line);
+    transition: border-color .2s ease, color .2s ease;
+  }
+  .contact-list a:hover { border-color: var(--accent); color: var(--accent); }
+  .contact-list .ico { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 0.85rem; }
+
+  footer {
+    padding: 26px 0 calc(26px + env(safe-area-inset-bottom, 0px));
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+  }
+
+  [data-i18n], [data-i18n-html] { transition: opacity .15s ease; }
+
+  /* language visibility */
+  html:not([dir="rtl"]) [lang="ar"] { display: none; }
+  html[dir="rtl"] [lang="en"] { display: none; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">Marina Kamal</div>
+    <div class="top-actions">
+      <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">◐</button>
+      <button class="lang-btn" id="langToggle">EN / AR</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+   <span class="hero-glyph" aria-hidden="true">&lt;/&gt;</span>
+   <svg class="hero-shapes" viewBox="0 0 1040 520" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+     <circle cx="900" cy="440" r="150" fill="rgba(255,255,255,0.08)"/>
+     <rect x="820" y="60" width="90" height="90" rx="18" fill="rgba(255,255,255,0.1)" transform="rotate(18 865 105)"/>
+     <path d="M60 480 q40 -60 90 0 t90 0" stroke="rgba(255,255,255,0.25)" stroke-width="3" fill="none"/>
+   </svg>
+   <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span>
+      <span lang="en">Full Stack Web Developer</span>
+      <span lang="ar">مطورة ويب Full Stack</span>
+    </div>
+    <h1 class="name">
+      <span lang="en">Marina Kamal Anwar Attallah</span>
+      <span lang="ar">مارينا كمال أنور عطاالله</span>
+    </h1>
+    <p class="role">
+      <span lang="en">Full Stack | Web Developer — turning ideas into clean, responsive, user-friendly websites.</span>
+      <span lang="ar">Full Stack | مطورة ويب — بحوّل الأفكار لمواقع نظيفة، متجاوبة، وسهلة الاستخدام.</span>
+    </p>
+    <div class="usp-line">
+      <span lang="en">I combine business knowledge with web development skills to build responsive, user-friendly websites and practical digital solutions.</span>
+      <span lang="ar">بدمج بين خلفيتي في نظم المعلومات الإدارية ومهارات تطوير الويب عشان أبني مواقع متجاوبة وسهلة الاستخدام وحلول رقمية عملية.</span>
+    </div>
+    <div class="hero-actions">
+      <a href="#projects" class="btn primary">
+        <span lang="en">View projects</span>
+        <span lang="ar">شوف المشاريع</span>
+      </a>
+      <a href="#contact" class="btn ghost">
+        <span lang="en">Get in touch</span>
+        <span lang="ar">تواصل معايا</span>
+      </a>
+    </div>
+   </div>
+  </section>
+
+  <section class="wrap" id="about">
+    <p class="kicker mono">01 <span lang="en">— About</span><span lang="ar">— نبذة عني</span></p>
+    <h2 class="section-title">
+      <span lang="en">A bit about me</span>
+      <span lang="ar">نبذة عني</span>
+    </h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p lang="en">Hi, I'm Marina — a Business Information Systems graduate and Full Stack Web Development learner. I enjoy turning ideas into clean, responsive, and user-friendly websites.</p>
+        <p lang="en">I'm passionate about technology, continuous learning, and building practical digital solutions through real-world projects.</p>
+        <p lang="ar">مرحبًا، أنا مارينا — خريجة نظم معلومات إدارية، وبتعلم Full Stack Web Development. بستمتع إني أحوّل الأفكار لمواقع نظيفة، متجاوبة، وسهلة الاستخدام.</p>
+        <p lang="ar">شغوفة بالتكنولوجيا، التعلّم المستمر، وبناء حلول رقمية عملية من خلال مشاريع حقيقية.</p>
+      </div>
+      <ul class="fact-list mono">
+        <li><span class="k" lang="en">Background</span><span class="k" lang="ar">الخلفية</span><span class="v"><span lang="en">Business Information Systems</span><span lang="ar">نظم معلومات إدارية</span></span></li>
+        <li><span class="k" lang="en">Focus</span><span class="k" lang="ar">التركيز</span><span class="v"><span lang="en">Full Stack Web Development</span><span lang="ar">تطوير ويب Full Stack</span></span></li>
+        <li><span class="k" lang="en">Based in</span><span class="k" lang="ar">مقيمة في</span><span class="v"><span lang="en">Egypt</span><span lang="ar">مصر</span></span></li>
+        <li><span class="k" lang="en">Available for</span><span class="k" lang="ar">متاحة لـ</span><span class="v"><span lang="en">Freelance projects</span><span lang="ar">مشاريع فريلانس</span></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="wrap" id="services">
+    <p class="kicker mono">02 <span lang="en">— Services</span><span lang="ar">— الخدمات</span></p>
+    <h2 class="section-title">
+      <span lang="en">What I can help with</span>
+      <span lang="ar">ممكن أساعدك في إيه</span>
+    </h2>
+    <div class="service-grid">
+      <div class="service-item" style="--svc-color:#2F6FA3;">
+        <h3 lang="en">Landing Page Development</h3>
+        <h3 lang="ar">صفحات هبوط (Landing Pages)</h3>
+        <p lang="en">Creating responsive and modern landing pages using HTML, CSS, and JavaScript.</p>
+        <p lang="ar">تصميم صفحات هبوط حديثة ومتجاوبة باستخدام HTML وCSS وJavaScript.</p>
+      </div>
+      <div class="service-item" style="--svc-color:#4E8DBE;">
+        <h3 lang="en">Responsive Web Design</h3>
+        <h3 lang="ar">تصميم ويب متجاوب</h3>
+        <p lang="en">Making websites work smoothly across desktops, tablets, and mobile devices.</p>
+        <p lang="ar">مواقع تشتغل بسلاسة على الديسكتوب والتابلت والموبايل.</p>
+      </div>
+      <div class="service-item" style="--svc-color:#1E5680;">
+        <h3 lang="en">Website Development</h3>
+        <h3 lang="ar">تطوير المواقع</h3>
+        <p lang="en">Building simple and functional websites for businesses and personal projects.</p>
+        <p lang="ar">بناء مواقع بسيطة وعملية للشركات والمشاريع الشخصية.</p>
+      </div>
+      <div class="service-item" style="--svc-color:#D9A257;">
+        <h3 lang="en">Website Fixes &amp; Improvements</h3>
+        <h3 lang="ar">إصلاح وتحسين المواقع</h3>
+        <p lang="en">Fixing layout issues, responsiveness problems, and improving existing websites.</p>
+        <p lang="ar">حل مشاكل التصميم والتجاوب وتحسين المواقع الحالية.</p>
+      </div>
+      <div class="service-item" style="--svc-color:#3E7DAE;">
+        <h3 lang="en">Frontend Development</h3>
+        <h3 lang="ar">تطوير الواجهات الأمامية</h3>
+        <p lang="en">Creating clean, interactive, and user-friendly website interfaces.</p>
+        <p lang="ar">واجهات نظيفة وتفاعلية وسهلة الاستخدام.</p>
+      </div>
+      <div class="service-item" style="--svc-color:#6FA6C9;">
+        <h3 lang="en">Database Development</h3>
+        <h3 lang="ar">تطوير قواعد البيانات</h3>
+        <p lang="en">Designing and managing simple databases for web and business applications.</p>
+        <p lang="ar">تصميم وإدارة قواعد بيانات بسيطة لتطبيقات الويب والأعمال.</p>
+      </div>
+      <div class="service-item" style="--svc-color:#12405E;">
+        <h3 lang="en">Website Maintenance</h3>
+        <h3 lang="ar">صيانة المواقع</h3>
+        <p lang="en">Updating website content, fixing issues, and making small improvements.</p>
+        <p lang="ar">تحديث محتوى الموقع وحل المشاكل وإجراء تحسينات بسيطة.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="skills">
+    <p class="kicker mono">03 <span lang="en">— Skills</span><span lang="ar">— المهارات</span></p>
+    <h2 class="section-title">
+      <span lang="en">Tools & skills</span>
+      <span lang="ar">الأدوات والمهارات</span>
+    </h2>
+    <div class="skill-cloud">
+      <span class="skill-tag" style="--tag-color:#E3EEF5; --tag-text:#2F6FA3;">HTML5 &amp; CSS3</span>
+      <span class="skill-tag" style="--tag-color:#FBF0DF; --tag-text:#B57C2E;">JavaScript</span>
+      <span class="skill-tag" style="--tag-color:#E3EEF5; --tag-text:#1E5680;"><span lang="en">Responsive Web Design</span><span lang="ar">تصميم متجاوب</span></span>
+      <span class="skill-tag" style="--tag-color:#EAF2F8; --tag-text:#3E7DAE;"><span lang="en">Frontend Development</span><span lang="ar">Frontend</span></span>
+      <span class="skill-tag" style="--tag-color:#FBF0DF; --tag-text:#8C5A1E;"><span lang="en">Full Stack Development</span><span lang="ar">Full Stack</span></span>
+      <span class="skill-tag" style="--tag-color:#E3EEF5; --tag-text:#2F6FA3;"><span lang="en">Database Management</span><span lang="ar">إدارة قواعد البيانات</span></span>
+      <span class="skill-tag" style="--tag-color:#E3EEF5; --tag-text:#2F6FA3;">SQL &amp; Microsoft Access</span>
+      <span class="skill-tag" style="--tag-color:#FBF0DF; --tag-text:#B57C2E;">Python</span>
+      <span class="skill-tag" style="--tag-color:#E3EEF5; --tag-text:#1E5680;">Java</span>
+      <span class="skill-tag" style="--tag-color:#EAF2F8; --tag-text:#3E7DAE;">Git &amp; GitHub</span>
+      <span class="skill-tag" style="--tag-color:#FBF0DF; --tag-text:#8C5A1E;"><span lang="en">Problem Solving</span><span lang="ar">حل المشكلات</span></span>
+      <span class="skill-tag" style="--tag-color:#E3EEF5; --tag-text:#2F6FA3;"><span lang="en">Teamwork &amp; Communication</span><span lang="ar">العمل الجماعي والتواصل</span></span>
+      <span class="skill-tag" style="--tag-color:#E3EEF5; --tag-text:#2F6FA3;"><span lang="en">Fast Learning</span><span lang="ar">تعلّم سريع</span></span>
+    </div>
+  </section>
+
+  <section class="wrap" id="projects">
+    <p class="kicker mono">04 <span lang="en">— Projects</span><span lang="ar">— المشاريع</span></p>
+    <h2 class="section-title">
+      <span lang="en">Selected work</span>
+      <span lang="ar">مشاريع مختارة</span>
+    </h2>
+    <div class="project-grid">
+
+      <div class="project-card">
+        <div class="project-preview" style="background: linear-gradient(135deg,#1E5680,#D9A257);">
+          <div class="browser-dots"><span></span><span></span><span></span></div>
+          <svg viewBox="0 0 400 250" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="250" fill="none"/>
+            <rect x="30" y="70" width="100" height="140" fill="#D9C6A8" opacity="0.85"/>
+            <rect x="150" y="40" width="100" height="170" fill="#B8925A" opacity="0.9"/>
+            <rect x="270" y="90" width="100" height="120" fill="#8C6D46" opacity="0.8"/>
+            <line x1="0" y1="230" x2="400" y2="230" stroke="#F4F5F1" stroke-opacity="0.15"/>
+          </svg>
+        </div>
+        <div class="project-body">
+          <h3>MODERA <span class="mono" style="font-size:0.7em; color:var(--ink-soft);">— <span lang="en">Fashion Website</span><span lang="ar">موقع أزياء</span></span></h3>
+          <p lang="en">A modern fashion website designed to showcase products with a clean, attractive, and user-friendly interface.</p>
+          <p lang="ar">موقع أزياء حديث لعرض المنتجات بواجهة نظيفة وجذابة وسهلة الاستخدام.</p>
+          <span class="project-tag mono">HTML · CSS · JavaScript</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-preview" style="background: linear-gradient(135deg,#2F6FA3,#12283B);">
+          <div class="browser-dots"><span></span><span></span><span></span></div>
+          <svg viewBox="0 0 400 250" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+            <rect x="30" y="40" width="80" height="80" fill="#EAF1ED" opacity="0.9"/>
+            <rect x="130" y="40" width="80" height="80" fill="#EAF1ED" opacity="0.7"/>
+            <rect x="230" y="40" width="80" height="80" fill="#EAF1ED" opacity="0.5"/>
+            <rect x="30" y="140" width="80" height="80" fill="#EAF1ED" opacity="0.5"/>
+            <rect x="130" y="140" width="80" height="80" fill="#EAF1ED" opacity="0.7"/>
+            <rect x="230" y="140" width="80" height="80" fill="#EAF1ED" opacity="0.9"/>
+          </svg>
+        </div>
+        <div class="project-body">
+          <h3><span lang="en">E-Commerce Website</span><span lang="ar">موقع تجارة إلكترونية</span></h3>
+          <p lang="en">A responsive e-commerce website for browsing products and providing a simple, convenient online shopping experience.</p>
+          <p lang="ar">موقع تجارة إلكترونية متجاوب لتصفح المنتجات وتجربة تسوق أونلاين بسيطة ومريحة.</p>
+          <span class="project-tag mono">HTML · CSS · JavaScript</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-preview" style="background: linear-gradient(135deg,#3E7DAE,#1E5680);">
+          <div class="browser-dots"><span></span><span></span><span></span></div>
+          <svg viewBox="0 0 400 250" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+            <circle cx="200" cy="125" r="60" fill="none" stroke="#EAF1ED" stroke-width="3" opacity="0.8"/>
+            <path d="M200 90 L200 160 M170 125 L230 125" stroke="#EAF1ED" stroke-width="4" stroke-linecap="round" opacity="0.9"/>
+            <circle cx="200" cy="125" r="95" fill="none" stroke="#EAF1ED" stroke-width="1" opacity="0.35"/>
+          </svg>
+        </div>
+        <div class="project-body">
+          <h3>EIA <span lang="en">Donation Website</span><span lang="ar">— موقع تبرعات</span></h3>
+          <p lang="en">A user-friendly donation website designed to make the donation process simple, accessible, and easy to navigate.</p>
+          <p lang="ar">موقع تبرعات سهل الاستخدام بيخلي عملية التبرع بسيطة وسهلة الوصول.</p>
+          <span class="project-tag mono">HTML · CSS · JavaScript</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-preview" style="background: linear-gradient(135deg,#12283B,#2F6FA3);">
+          <div class="browser-dots"><span></span><span></span><span></span></div>
+          <svg viewBox="0 0 400 250" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+            <rect x="40" y="60" width="320" height="20" fill="#EAF1ED" opacity="0.85"/>
+            <rect x="40" y="95" width="320" height="20" fill="#EAF1ED" opacity="0.6"/>
+            <rect x="40" y="130" width="320" height="20" fill="#EAF1ED" opacity="0.85"/>
+            <rect x="40" y="165" width="320" height="20" fill="#EAF1ED" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="project-body">
+          <h3><span lang="en">School Database System</span><span lang="ar">نظام قاعدة بيانات مدرسي</span></h3>
+          <p lang="en">A database system designed to organize and manage school information, including student and academic data.</p>
+          <p lang="ar">نظام قاعدة بيانات لتنظيم وإدارة بيانات المدرسة، بما فيها بيانات الطلاب والبيانات الأكاديمية.</p>
+          <span class="project-tag mono">SQL · Access</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-preview" style="background: linear-gradient(135deg,#6FA6C9,#D9A257);">
+          <div class="browser-dots"><span></span><span></span><span></span></div>
+          <svg viewBox="0 0 400 250" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+            <path d="M200 60 C 240 60 260 90 260 120 C 260 165 200 200 200 200 C 200 200 140 165 140 120 C 140 90 160 60 200 60 Z" fill="#EAF1ED" opacity="0.15"/>
+            <path d="M170 120 h20 l10 -20 l15 40 l10 -20 h15" fill="none" stroke="#EAF1ED" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+          </svg>
+        </div>
+        <div class="project-body">
+          <h3><span lang="en">Hospital Database System</span><span lang="ar">نظام قاعدة بيانات مستشفى</span></h3>
+          <p lang="en">A database project designed to manage hospital information, including patients, doctors, departments, appointments, and medical records.</p>
+          <p lang="ar">مشروع قاعدة بيانات لإدارة بيانات المستشفى: المرضى، الأطباء، الأقسام، المواعيد، والسجلات الطبية.</p>
+          <span class="project-tag mono">SQL · Access</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-preview" style="background: linear-gradient(135deg,#1E5680,#6FA6C9);">
+          <div class="browser-dots"><span></span><span></span><span></span></div>
+          <svg viewBox="0 0 400 250" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+            <rect x="60" y="60" width="70" height="50" fill="none" stroke="#EAF1ED" stroke-width="2" opacity="0.85"/>
+            <rect x="270" y="60" width="70" height="50" fill="none" stroke="#EAF1ED" stroke-width="2" opacity="0.85"/>
+            <rect x="165" y="150" width="70" height="50" fill="none" stroke="#EAF1ED" stroke-width="2" opacity="0.85"/>
+            <line x1="95" y1="110" x2="195" y2="150" stroke="#EAF1ED" stroke-width="1.5" opacity="0.5"/>
+            <line x1="305" y1="110" x2="205" y2="150" stroke="#EAF1ED" stroke-width="1.5" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="project-body">
+          <h3><span lang="en">Database Design Projects</span><span lang="ar">مشاريع تصميم قواعد بيانات</span></h3>
+          <p lang="en">Designed and developed database systems for different business scenarios, focusing on organized data management and efficient information retrieval.</p>
+          <p lang="ar">تصميم وتطوير قواعد بيانات لسيناريوهات أعمال مختلفة، مع التركيز على تنظيم البيانات واسترجاعها بكفاءة.</p>
+          <span class="project-tag mono">SQL · Database Design</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="contact" style="background: var(--hero-grad); border-bottom:none; margin-top: 0;">
+   <div class="wrap">
+    <div class="contact-wrap">
+      <p class="kicker mono" style="color:#EAF1EC;">05 <span lang="en">— Contact</span><span lang="ar">— تواصل</span></p>
+      <h2 class="contact-title" style="color:#FFFFFF;">
+        <span lang="en">Let's build something together.</span>
+        <span lang="ar">يلا نبني حاجة سوا.</span>
+      </h2>
+      <div class="contact-list">
+        <a href="mailto:marinakamal222004@gmail.com" style="color:#FFFFFF; border-color: rgba(255,255,255,0.4);"><span class="ico mono" style="color:#E6BC85;">@</span> marinakamal222004@gmail.com</a>
+        <a href="tel:+201200878818" style="color:#FFFFFF; border-color: rgba(255,255,255,0.4);"><span class="ico mono" style="color:#E6BC85;">Tel</span> +20 120 087 8818</a>
+        <a href="https://www.linkedin.com/in/marina-kamal-70104a27a" target="_blank" rel="noopener" style="color:#FFFFFF; border-color: rgba(255,255,255,0.4);"><span class="ico mono" style="color:#E6BC85;">in</span> LinkedIn</a>
+      </div>
+    </div>
+   </div>
+  </section>
+</main>
+
+<footer>
+  <span lang="en">Designed &amp; built by Marina Kamal</span>
+  <span lang="ar">تصميم وتطوير مارينا كمال</span>
+</footer>
+
+<script>
+  const html = document.documentElement;
+  const langBtn = document.getElementById('langToggle');
+  const themeBtn = document.getElementById('themeToggle');
+
+  function setLang(lang) {
+    if (lang === 'ar') {
+      html.setAttribute('lang', 'ar');
+      html.setAttribute('dir', 'rtl');
+    } else {
+      html.setAttribute('lang', 'en');
+      html.setAttribute('dir', 'ltr');
+    }
+    try { localStorage.setItem('portfolio_lang', lang); } catch(e) {}
+  }
+
+  langBtn.addEventListener('click', () => {
+    const current = html.getAttribute('dir') === 'rtl' ? 'ar' : 'en';
+    setLang(current === 'ar' ? 'en' : 'ar');
+  });
+
+  themeBtn.addEventListener('click', () => {
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    try { localStorage.setItem('portfolio_theme', next); } catch(e) {}
+  });
+
+  try {
+    const savedLang = localStorage.getItem('portfolio_lang');
+    if (savedLang) setLang(savedLang);
+    const savedTheme = localStorage.getItem('portfolio_theme');
+    if (savedTheme) html.setAttribute('data-theme', savedTheme);
+  } catch(e) {}
+</script>
+</body>
+</html>
